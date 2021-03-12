@@ -1,6 +1,6 @@
 <template>
-  <div class="shadow-lg bg-white dark:bg-gray-800 px-6 pt-4 md:rounded-md pb-8">
-    <h2 class="text-xl font-semibold text-gray-600 mb-4 dark:text-white">Employees</h2>
+  <div class="shadow-lg bg-white dark:bg-gray-800 px-6 pt-4 lg:rounded-md pb-8">
+    <h2 class="text-xl font-semibold text-gray-500 mb-4 dark:text-white">Employees</h2>
     <div
       class="border-gray-200 dark:border-gray-700 rounded-md border border-b-0 my-4 overflow-x-scroll md:overflow-auto"
     >
@@ -21,12 +21,14 @@
           <td class="py-2 px-4">
             <div class="flex items-center">
               <div class="h-6 w-6 flex-none mr-2">
-                <img
+                <img v-if="user.profile_img"
                   class="w-full h-full rounded-full object-cover"
-                  src="../assets/img/avatar.jpg"
+                  :src="user.profile_img"
                   alt=""
                 />
+                
               </div>
+               
               <div>
                 <h3 class="text-black text-sm font-medium dark:text-gray-200">
                   {{ user.first_name }} {{ user.last_name }}
@@ -38,8 +40,8 @@
             </div>
           </td>
           <td class="py-2 px-4">
-            <h3 class="text-black text-sm font-medium dark:text-gray-200">September 20, 2019</h3>
-            <p class="text-xs text-gray-400 font-medium">2 days ago</p>
+            <h3 class="text-black text-sm font-medium dark:text-gray-200">{{ user.sessions[0] | formatDate }}</h3>
+            <p class="text-xs text-gray-400 font-medium">{{ user.sessions[1] |formatDateRelative }}</p>
           </td>
           <td class="py-2 px-4">
             <h3 class="text-black text-sm font-medium dark:text-gray-200">
@@ -73,11 +75,30 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
-  props: {
-    users: {
-      type: Array,
-      required: true,
+  name: 'VueTable',
+    async mounted() {
+    // Users
+    await this.getUsers();
+
+  },
+    data() {
+    return {
+      users: [],
+    };
+  },
+  filters: {
+    formatDate: (value) => moment(value).format('MMMM d, YYYY'),
+    formatDateRelative: (value) => moment(value).fromNow()
+    
+  },
+  methods: {
+     async getUsers() {
+      const userResponse = await fetch("/api/users");
+      const resp = await userResponse.json();
+      this.users = resp.users;
     },
   },
 };

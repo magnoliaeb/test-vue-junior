@@ -3,7 +3,7 @@ const colors = require("tailwindcss/colors");
 // tailwind.config.js
 module.exports = {
   purge: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
-  darkMode: 'media',
+  darkMode: 'class',
   theme: {
     screens: {
       xs: "375px",
@@ -15,7 +15,7 @@ module.exports = {
   },
   colors: {
     gray: colors.coolGray,
-    blue: colors.blue,
+    blue: '#1E1ADD',
     purple: colors.purple,
     black: colors.black,
     error: colors.rose,
