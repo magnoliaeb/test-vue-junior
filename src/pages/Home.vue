@@ -64,9 +64,9 @@
 </template>
 
 <script>
-import VueHeader from "@/components/VueHeader.vue";
-import VueTable from "@/components/VueTable.vue";
-import VueGraphic from "../components/VueGraphic.vue";
+import VueHeader from "@/components/Header.vue";
+import VueTable from "@/components/Table.vue";
+import VueGraphic from "../components/Graphic.vue";
 
 export default {
   name: "Home",
@@ -78,30 +78,26 @@ export default {
     };
   },
   mounted () {
-  
-    this.selectedTheme();
+    this.loadDarkTheme();
   },
   methods: {
-   
     selectedTheme() {
-      
-      let htmlClasses = document.querySelector("html").classList;
+      const darkTheme = localStorage.getItem('dark-theme');
+      const { storeAction, htmlAction } = {
+        storeAction: (darkTheme) ? 'removeItem' : 'setItem',
+        htmlAction: (darkTheme) ? 'remove' : 'add'
+      };
 
-
-        let dark = localStorage.getItem('dark')
-
-        if (dark) {
-          localStorage.removeItem("dark");
-          htmlClasses.remove("dark");
-          this.isDark = false
-        } else {
-             htmlClasses.add("dark");
-          localStorage.setItem('dark', true)
-          this.isDark = true
-          
-        }
-
+      localStorage[storeAction]('dark-theme', darkTheme);
+      document.querySelector('html').classList[htmlAction]('dark');
+      this.isDark = !darkTheme;
     },
+    loadDarkTheme() {
+      const darkTheme = localStorage.getItem('dark-theme');
+      if (darkTheme) document.querySelector('html').classList.add('dark');
+      this.isDark = darkTheme;
+    }
+
   },
 };
 </script>

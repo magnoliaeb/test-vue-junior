@@ -18,7 +18,7 @@
 
     <div class="relative">
       <button
-        @click="isDrawer = !isDrawer"
+        @click="toggleMenu"
         class="border-2 border-white w-8 h-8 lg:w-9 lg:h-9 rounded-full focus:outline-none overflow-hidden"
       >
         <img
@@ -29,7 +29,7 @@
       </button>
 
       <div
-        v-if="isDrawer"
+        v-show="showMenu"
         class="bg-white dark:bg-gray-800 rounded-sm w-52 border shadow-md absolute top-10 -left-44 z-50 dark:border-gray-700"
       >
         <div class=" px-3 py-2">
@@ -88,9 +88,14 @@ export default {
   name: "VueHeader",
   data() {
     return {
-      isDrawer: true,
+      showMenu: true,
     };
   },
+  methods: {
+    toggleMenu() {
+      this.showMenu = !this.showMenu;
+    }
+  }
 };
 </script>
 
