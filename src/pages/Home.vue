@@ -78,21 +78,18 @@ export default {
     };
   },
   mounted () {
-    this.loadDarkTheme();
+    this.loadTheme();
   },
   methods: {
     selectedTheme() {
       const darkTheme = localStorage.getItem('dark-theme');
-      const { storeAction, htmlAction } = {
-        storeAction: (darkTheme) ? 'removeItem' : 'setItem',
-        htmlAction: (darkTheme) ? 'remove' : 'add'
-      };
+      const action = (darkTheme) ? 'removeItem' : 'setItem'
 
-      localStorage[storeAction]('dark-theme', darkTheme);
-      document.querySelector('html').classList[htmlAction]('dark');
+      localStorage[action]('dark-theme', darkTheme);
+      document.querySelector('html').classList.toggle('dark');
       this.isDark = !darkTheme;
     },
-    loadDarkTheme() {
+    loadTheme() {
       const darkTheme = localStorage.getItem('dark-theme');
       if (darkTheme) document.querySelector('html').classList.add('dark');
       this.isDark = darkTheme;
