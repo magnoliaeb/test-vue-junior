@@ -1,6 +1,6 @@
 <template>
   <article
-    class="shadow-lg bg-white dark:bg-gray-800 px-6 py-4 lg:rounded-md pb-6 md:pb-0"
+      class="shadow-lg bg-white dark:bg-gray-800 px-6 py-4 lg:rounded-md pb-6 md:pb-0"
   >
     <div>
       <h2 class="text-lg text-gray-400 font-semibold dark:text-white">
@@ -8,14 +8,14 @@
       </h2>
       <p class="text-gray-300">Trends</p>
     </div>
-    <div class="">
+    <div>
       <div class="flex justify-center py-6 items-center ">
         <apexchart
-          class="mb-8"
-          type="pie"
-          width="380"
-          :options="chartOptions"
-          :series="series"
+            class="mb-8"
+            type="pie"
+            width="380"
+            :options="chartOptions"
+            :series="series"
         ></apexchart>
       </div>
     </div>
@@ -58,7 +58,7 @@ export default {
             },
           },
         ],
-        
+
         legend: {
           show: true,
           showForSingleSeries: false,
@@ -67,11 +67,9 @@ export default {
             colors: ["#9CA3AF"],
             useSeriesColors: false,
           },
-            markers: {
-         
-          fillColors: ['#D8CBFD', '#9D7DF9', '#263238', '#DCDEDF'],
-          
-      },
+          markers: {
+            fillColors: ['#D8CBFD', '#9D7DF9', '#263238', '#DCDEDF'],
+          },
         },
       },
     };

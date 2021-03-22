@@ -8,8 +8,8 @@
         <tr class="border-gray-100 dark:border-gray-700 border-b text-gray-400 text-left text-xs dark:text-gray-200">
           <th class="pb-2 pt-6 px-4">Employee</th>
           <th class="pb-2 pt-6 px-4">Last login</th>
-          <th class="pb-2 pt-6 px-4">Departament</th>
-          <th class="pb-2 pt-6 px-4">status</th>
+          <th class="pb-2 pt-6 px-4">Department</th>
+          <th class="pb-2 pt-6 px-4">Status</th>
           <th class="pb-2 pt-6 px-4"></th>
         </tr>
 
@@ -26,9 +26,9 @@
                   :src="user.profile_img"
                   alt=""
                 />
-                
+
               </div>
-               
+
               <div>
                 <h3 class="text-black text-sm font-medium dark:text-gray-200">
                   {{ user.first_name }} {{ user.last_name }}
@@ -41,7 +41,7 @@
           </td>
           <td class="py-2 px-4">
             <h3 class="text-black text-sm font-medium dark:text-gray-200">{{ user.sessions[0] | formatDate }}</h3>
-            <p class="text-xs text-gray-400 font-medium">{{ user.sessions[1] |formatDateRelative }}</p>
+            <p class="text-xs text-gray-400 font-medium">{{ user.sessions[0] | formatDateRelative }}</p>
           </td>
           <td class="py-2 px-4">
             <h3 class="text-black text-sm font-medium dark:text-gray-200">
@@ -75,30 +75,35 @@
 </template>
 
 <script>
-import moment from 'moment'
+import HumanizeDate from '@videsk/humanize-date'
 
 export default {
   name: 'VueTable',
-    async mounted() {
+  async mounted() {
     // Users
     await this.getUsers();
 
   },
-    data() {
+  data() {
     return {
       users: [],
     };
   },
   filters: {
-    formatDate: (value) => moment(value).format('MMMM d, YYYY'),
-    formatDateRelative: (value) => moment(value).fromNow()
-    
+    formatDate: value => new HumanizeDate().toLocale(value),
+    formatDateRelative: (value) => new HumanizeDate().dates(value, new Date()).ago('months'),
   },
   methods: {
-     async getUsers() {
+    async getUsers() {
       const userResponse = await fetch("/api/users");
       const resp = await userResponse.json();
-      this.users = resp.users;
+      this.users = this.sortSessions(resp.users);
+    },
+    sortSessions(users) {
+      return users.map((user) => {
+        user.sessions = user.sessions.sort((a,b) => new Date(b) - new Date(a));
+        return user;
+      });
     },
   },
 };
